@@ -1,6 +1,7 @@
 package io.mbos.newsapp.ui.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -30,8 +31,9 @@ fun Task(item: TaskModel, onDelete: (id: Int) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp),
-        backgroundColor = colors.primary,
+            .padding(10.dp)
+            .border(1.dp, io.mbos.newsapp.ui.theme.Divider, Shapes.medium),
+        backgroundColor = Color.White,
         shape = Shapes.large,
         elevation = 0.dp
     ) {
@@ -54,8 +56,8 @@ fun Task(item: TaskModel, onDelete: (id: Int) -> Unit) {
                     text = item.status.name,
                     fontSize = 14.sp,
                     fontFamily = WorkSans,
-                    fontWeight = FontWeight.Normal,
-                    color = Dark
+                    fontWeight = FontWeight.SemiBold,
+                    color = colors.onPrimary
                 )
             }
 
@@ -75,7 +77,6 @@ fun Task(item: TaskModel, onDelete: (id: Int) -> Unit) {
                         bottom = 10.dp
                     )
                 )
-
                 Text(
                     text = item.comment,
                     fontSize = 14.sp,
@@ -84,7 +85,6 @@ fun Task(item: TaskModel, onDelete: (id: Int) -> Unit) {
                     color = DarkSecondary
                 )
             }
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -94,13 +94,9 @@ fun Task(item: TaskModel, onDelete: (id: Int) -> Unit) {
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.time),
-                        contentDescription = "",
-                        colorFilter = ColorFilter.tint(Dark)
-                    )
+                    Image(painter = painterResource(id = R.drawable.time), contentDescription = "")
                     Text(
-                        text = "20.11.2022 13:00 - 19:00",
+                        text = item.deadline,
                         fontSize = 14.sp,
                         fontFamily = WorkSans,
                         fontWeight = FontWeight.Normal,
@@ -108,14 +104,17 @@ fun Task(item: TaskModel, onDelete: (id: Int) -> Unit) {
                     )
                 }
                 Spacer(modifier = Modifier.width(15.dp))
-                Button(
-                    onClick = { /*TODO*/ },
-                    colors = ButtonDefaults.textButtonColors(
-                        backgroundColor = colors.onPrimary,
-                        contentColor = Color.White
-                    )
-                ) {
-                    Text(text = item.status.name)
+
+                if (item.status != TaskStatus.Completed) {
+                    Button(
+                        onClick = { /*TODO*/ },
+                        colors = ButtonDefaults.textButtonColors(
+                            backgroundColor = colors.onPrimary,
+                            contentColor = Color.White
+                        )
+                    ) {
+                        Text(text = item.status.name)
+                    }
                 }
             }
         }
@@ -131,6 +130,14 @@ private fun DefaultPreview() {
         "ea velit perferendis earum ut voluptatem voluptate itaque iusto\\ntotam pariatur in\\nnemo voluptatem voluptatem autem magni tempora minima in\\nest distinctio qui assumenda accusamus dignissimos officia nesciunt nobis"
 
     Surface(modifier = Modifier.fillMaxSize()) {
-        Task(TaskModel(0, message, comment, TaskStatus.Assigned)) { }
+        Task(item = TaskModel(
+            id = 0,
+            message = message,
+            comment = comment,
+            updateTime = "20.12.22 16:40",
+            createTime = "20.12.22 16:40",
+            deadline = "21.12.22 16:50",
+            status = TaskStatus.Accepted
+        ), onDelete = {})
     }
 }

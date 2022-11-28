@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitFactory {
 
-    private val BASE_URL = "https://jsonplaceholder.typicode.com"
+    private val BASE_URL = "http://neowise.uz:8080/"
 
     private val retrofit by lazy { buildRetrofit() }
 
@@ -16,5 +16,5 @@ object RetrofitFactory {
             .build()
     }
 
-    fun newsService() = retrofit.create(NewsService::class.java)
+    fun tasksService(): TasksService = retrofit.create(TasksService::class.java)
 }
